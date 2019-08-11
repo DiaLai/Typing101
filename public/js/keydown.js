@@ -29,6 +29,8 @@ var $write = $("#write"),
   $shift = $("#shift"),
   $rshift = $("#rshift"),
   $caps = $("#caps"),
+  $write2 = $("#write2"),
+  $Backspace = $("#Backspace"),
   shift = false,
   capslock = false;
 $(function() {
@@ -212,32 +214,75 @@ $(function() {
     }
     if (event.which == 90) {
       character = "z";
+      if (shift != capslock) {
+        character = "Z";
+      }
       $z.addClass("press");
     }
     if (event.which == 32) {
       character = " ";
       $space.addClass("press");
     }
+    if (event.which == 188) {
+      character = ",";
+      if (shift) character = "<";
+      $("#lt").addClass("press");
+    }
+    if (event.which == 190) {
+      character = ".";
+      if (shift) character = ">";
+      $("#gt").addClass("press");
+    }
+
+    if (event.which == 192) {
+      character = "`";
+      if (shift) character = "~";
+      $("#dot").addClass("press");
+    }
+    if (event.which == 49) {
+      character = "1";
+      if (shift) character = "!";
+      $("#first").addClass("press");
+    }
+
     if (event.which == 16) {
       $(".letter").toggleClass("uppercase");
       $(".symbol span").toggle();
-      shift = true;
-      $shift.addClass("press");
-      $rshift.addClass("press");
+      shift = shift === true ? false : true;
+      if (shift) {
+        $shift.addClass("press");
+        $rshift.addClass("press");
+      } else {
+        $shift.removeClass("press");
+        $rshift.removeClass("press");
+      }
     }
     if (event.which == 20) {
+      $(".letter").toggleClass("uppercase");
       capslock = capslock === true ? false : true;
       if (capslock) {
         $caps.addClass("press");
-        $(".letter").toggleClass("uppercase");
-      } else $caps.removeClass("press");
-    }
-    if (shift === true) {
-      $(".symbol span").toggle();
+      } else {
+        $caps.removeClass("press");
+      }
     }
 
-    if (capslock !== shift) $(".letter").toggleClass("uppercase");
+    if (event.which == 8) {
+      var html = $write.html();
+      $Backspace.addClass("press");
+      $write.html(html.substr(0, html.length - 1));
+      return false;
+    }
+
     // Add the character
     $write.html($write.html() + character);
+    if (
+      $write.val().length > $write2.val().length ||
+      $write.val() != $write2.val().slice(0, $write.val().length)
+    ) {
+      $write.css("color", "red");
+    } else {
+      $write.css("color", "black");
+    }
   });
 });

@@ -81,15 +81,27 @@ $(function() {
     if (event.which == 32) {
       $space.removeClass("press");
     }
-    if (event.which == 16) {
-      $shift.removeClass("press");
-      $rshift.removeClass("press");
-      shift = false;
+
+    if (event.which == 192) {
+      $("#dot").removeClass("press");
     }
-    if (shift === true) {
-      $(".symbol span").toggle();
+    if (event.which == 49) {
+      $("#first").removeClass("press");
     }
 
-    if (capslock !== shift) $(".letter").toggleClass("uppercase");
+    if (event.which == 188) {
+      character = ",";
+      if (shift) character = "<";
+      $("#lt").removeClass("press");
+    }
+    if (event.which == 190) {
+      character = ".";
+      if (shift) character = ">";
+      $("#gt").removeClass("press");
+    }
+    // Delete
+    if (event.which == 8) {
+      $Backspace.removeClass("press");
+    }
   });
 });
